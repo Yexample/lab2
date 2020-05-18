@@ -234,6 +234,7 @@ float checkinput (string call) {
             correct = true;
         }
         else if (flag) {
+            cout << "\nНеизвестная ошибка" << endl;
             correct = false;
         }
     } while (correct == false);
