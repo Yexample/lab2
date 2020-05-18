@@ -9,6 +9,8 @@
 
 #define DOT '.'
 #define MINUS '-'
+#define ZERO '0'
+#define COMMA '.'
 
 using namespace std;
 
@@ -34,6 +36,7 @@ int main() {
         amax = checkinput(call);
         if (amin <= amax)
             aClear = true;
+        else cout << "\namin должно быть меньше или равно amax, попробуйте еще раз";
     } while (aClear == false );
     do {
         call = "\nВведите bmin = ";
@@ -42,6 +45,7 @@ int main() {
         bmax = checkinput(call);
         if (bmin <= bmax)
             bClear = true;
+        else cout << "\nbmin должно быть меньше или равно bmax, попробуйте еще раз";
     } while (bClear == false );
     do {
         call = "\nВведите da = ";
@@ -80,17 +84,28 @@ int main() {
         }
     }
 
-    float yi;
-    float A;
+    float yi = 0;
+    float A = 0;
+    float resultU =0;
 
     for (int i = 0; i < output.size(); i += 4) {
         yi = output[i + 3];
         A = output[i];
-        U = pow((pow(yi, 2.0) + pow(A, 2.0)), 1.0/2.0);
+        U = sqrt(((pow(yi, 2.0) + pow(A, 2.0)))/2);
+        //cout << endl << fixed << setprecision(3) << "U = " << U << " yi = " << yi << " A = " << A << endl;
         function.push_back(U);
     }
 
-    float resultU = *min_element(function.begin(), function.end()); // Функция U, которую требуется вычислить в задании'
+    //for (int i = 0; i < function.size(); i++)
+        //cout << endl << "vector function: " << function[i];
+
+    for (int i = 0; i < function.size(); i++) {
+        if (isnan(function[i])){
+            function.erase (function.begin()+i);
+        }
+        else
+            resultU = *min_element(function.begin(), function.end()); // Функция U, которую требуется вычислить в задании'
+    }
 
     int k = 0; // номер элемента верктора output
     int counta = 0;
@@ -158,7 +173,7 @@ int main() {
     function.clear();
 
     char rerun;
-    cout << "Would you like to run the program again? (Y/N) "; // Запрос на повторный запуск
+    cout << "Запустить программу снова? (Y = да) "; // Запрос на повторный запуск
     cin >> rerun;
 
     if (rerun == 'y' or rerun == 'Y')
@@ -176,9 +191,11 @@ float checkinput (string call) {
     int count = 0; // счетчик цифр
     int count_dot = 0;
     int count_minus = 0;
+    int count_zero = 0;
     bool flag = true;
     bool flag_dot = false;
     bool flag_minus = false;
+    bool flag_zero = false;
     bool correct = false;
 
     do {
@@ -193,24 +210,50 @@ float checkinput (string call) {
                 flag_minus = true;
                 count_minus++;
             }
-            if (((!isdigit(input[i])) && (!flag_dot) && (!flag_minus)) || (count_dot >= 2) || (count_minus >= 2)) {
+            if (input[i] == ZERO) {
+                flag_zero = true;
+                count_zero++;
+                //count++;
+            }
+            if (((!isdigit(input[i])) && (!flag_dot) && (!flag_minus) && (!flag_zero)) || (count_dot >= 2) || (count_minus >= 2)) {
                 cout << "Введено не число, попробуйте еще раз" << endl;
                 cin.ignore(10000, '\n');
                 flag = true;
                 break;
-            } else
+            }
+            else
                 count++;
         }
-        if ((((count == (int) input.length()) && (atof(input.c_str()) > -9223372036854775808.0) &&
-              (atoi(input.c_str()) < 9223372036854775807.0))) || (count_minus == 1) &&
-                                                                 (((int(count + 1) == (int) input.length()) &&
-                                                                   (atof(input.c_str()) > -9223372036854775808.0) &&
-                                                                   (atoi(input.c_str()) < 9223372036854775807.0)))) {
+        if (((((count == (int) input.length()) && (atof(input.c_str()) > -9223372036854775808.0) &&
+              (atof(input.c_str()) < 9223372036854775807.0))) || (count_minus == 1) &&
+              (((int(count + 1) == (int) input.length()) && (atof(input.c_str()) > -9223372036854775808.0) &&
+              (atof(input.c_str()) < 9223372036854775807.0))) || (count_zero == 1) &&
+              (((int(count) == (int) input.length()) && (atof(input.c_str()) > -9223372036854775808.0) &&
+              (atof(input.c_str()) < 9223372036854775807.0))) || (count_dot == 1) &&
+              (((int(count + 1) == (int) input.length()) && (atof(input.c_str()) > -9223372036854775808.0) &&
+              (atof(input.c_str()) < 9223372036854775807.0)))) || (count_minus == 1) &&
+              (((int(count + 1) == (int) input.length()) && (atof(input.c_str()) > -9223372036854775808.0) &&
+              (atof(input.c_str()) < 9223372036854775807.0))) || (count_zero == 1) && (count_dot == 1) &&
+              (((int(count + 1) == (int) input.length()) && (atof(input.c_str()) > -9223372036854775808.0) &&
+              (atof(input.c_str()) < 9223372036854775807.0))) || (count_zero == 1) && (count_minus == 1) && (count_dot == 1) &&
+              (((int(count + 2) == (int) input.length()) ))) {
             correct = true;
-        } else if (flag) {
+        }
+        else if (flag) {
             correct = false;
         }
     } while (correct == false);
+
+    // cout << "\nStatus correct = " << correct << endl;      Проверка успешного прохождения цикла
+
+    //count = 0; // счетчик цифр
+    //count_dot = 0;
+    //count_minus = 0;
+    //flag = true;
+    //flag_dot = false;
+    //flag_minus = false;
+    //flag_zero = false;
+    //correct = false;
 
     float floatInput = stof(input);
 
