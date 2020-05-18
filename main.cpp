@@ -10,7 +10,6 @@
 #define DOT '.'
 #define MINUS '-'
 #define ZERO '0'
-#define COMMA '.'
 
 using namespace std;
 
@@ -23,7 +22,6 @@ int main() {
 
     int n;
     float a, b, Yi, U, amin, amax, bmin, bmax, da, db;
-
     bool aClear = false;
     bool bClear = false;
     bool daClear = false;
@@ -67,7 +65,6 @@ int main() {
     for (int i = 0; i < 5; i++)
         cout << setw(15) << header[i];
 
-
     vector <float> output;
     vector <float> function;
 
@@ -92,12 +89,9 @@ int main() {
         yi = output[i + 3];
         A = output[i];
         U = sqrt(((pow(yi, 2.0) + pow(A, 2.0)))/2);
-        //cout << endl << fixed << setprecision(3) << "U = " << U << " yi = " << yi << " A = " << A << endl;
+        //cout << endl << fixed << setprecision(3) << "U = " << U << " yi = " << yi << " A = " << A << endl;   
         function.push_back(U);
     }
-
-    //for (int i = 0; i < function.size(); i++)
-        //cout << endl << "vector function: " << function[i];
 
     for (int i = 0; i < function.size(); i++) {
         if (isnan(function[i])){
@@ -246,17 +240,7 @@ float checkinput (string call) {
 
     // cout << "\nStatus correct = " << correct << endl;      Проверка успешного прохождения цикла
 
-    //count = 0; // счетчик цифр
-    //count_dot = 0;
-    //count_minus = 0;
-    //flag = true;
-    //flag_dot = false;
-    //flag_minus = false;
-    //flag_zero = false;
-    //correct = false;
-
     float floatInput = stof(input);
-
     return floatInput;
 
 }
